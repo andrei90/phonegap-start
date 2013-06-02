@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+<link href="css/mainstyles.css" rel="stylesheet" type="text/css" />
+
+
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="js/iscroll.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<title>Jurnal Online</title>
+</head>
+<body>
+		<div id="masthead">
+			<img id="logo" src="img/logoxx.jpg">
+		</div>
+		<div id="container">
+			<div id="introText">
+
+				<p id="intro" align="justify">
+				<p>Jurnal Online este o platforma de blogging care poate sa iti
+					ofera mai mult decat orice alta astfel de platforma.</p>
+
+				<p>
+					<b> Te lasa sa iti alegi cititorii.</b> Daca doriti sa incercati,
+					va rog sa va inregistrati apasand butonul de mai jos.
+				</p>
+
+			</div>
+			<form id="loginForm" method="post">
+				<input type="hidden" name="login" value="true" />
+				<fieldset>
+					<label for="username">Utilizator</label> 
+					<input type="text"
+						name="username" id="username" placeholder="Utilizatorul tau"
+						required autofocus maxlength="20" /> 
+						<label for="password">Parola</label>
+					<input type="password" name="password" id="password"
+						placeholder="Parola ta" required maxlength="20" /> 
+						<input
+						type="button" value="Inregistrare" name="rec" onclick="location.href='signup.html';"/> 
+						<input
+						type="button" name="commit" value="Autentificare" onclick="submitLoginForm()"  />
+
+				</fieldset>
+				<br />
+				<div id="LoginErrorDiv" class="errorMessage"></div>
+			</form>
+		</div>
+		<div id="footer">
+			<br />
+			<p align='center'>&copy; 2013. Toate drepturile rezervate.</p>
+		</div>
+</body>
+</html>

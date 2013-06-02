@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+<link href="css/mainstyles.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css"
+	type="text/css" />
+<script type="text/javascript" src="js/iscroll.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<title>Jurnal Online</title>
+</head>
+<body>
+		<div id="masthead">
+			<img id="logo" src="img/logoxx.jpg">
+		</div>
+	  <div class="viewArticle" style="height:10%;">
+		<h1 align="center"></h1>
+	  </div>
+      <div class="viewArticleSumm" style="height:15%;font-size:1.5em;"></div>
+      <div id="content"class="viewArticle" style="height:35%;font-size:1.6em;"></div>
+	  <div id="footArticle" style="background-color:white" style="height:10%; padding:0.5em;">
+	  
+      <p class="pubDate">Publicat in:  </p>
+
+      <p><a href="listArticles.html">Reintoarecere</a></p>
+	  </div>
+	  <script type="text/javascript">	  
+	  var getR = window.location.href.slice(window.location.href.indexOf('?') + 1);
+	  var url = serviceURL + 'ExposeWS.php?'+ getR;
+	  $(document).ready(function() {
+		$.get(url,  function(articleData, status, xhr) {
+			var obj = jQuery.parseJSON(articleData);
+			
+			$(".viewArticle h1").text(obj.viewArticle.article.title);
+			$(".viewArticleSumm").append(obj.viewArticle.article.summary);
+			$("#content").text(obj.viewArticle.article.content);
+			var textPub = $(".pubDate").text() + ' ' + new Date(obj.viewArticle.article.publicationDate*1000).toDateString();
+			$(".pubDate").text(textPub);
+		}).error(function() { alert("error"); });
+	  });
+	  </script
+</div>
+</body>
+</html>

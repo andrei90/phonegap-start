@@ -1,21 +1,21 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+localStorage['serviceURL'] = "http://localhost/phonegap-start/services/";
+var serviceURL = localStorage['serviceURL'];
+
+
+function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+		}
+			return vars;
+}
+
+var action = getUrlVars()["action"];
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -37,13 +37,43 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
+		document.location.href = "login.html"; 
+    }		
 };
+
+function submitLoginForm(){	
+	$.post(serviceURL + 'ExposeWS.php?action=login', $("#loginForm").serialize(),  function(data) {		
+		var obj = jQuery.parseJSON(data);
+		if(obj.login=="successful"){
+			document.location.href = "listArticles.html"; 
+		} else if(obj.login =="failed") {
+			$("#LoginErrorDiv").css("display", "block");
+			$("#LoginErrorDiv").text("Datele de autentificare sunt incorecte. Incercati din nou.");
+		} else {
+		alert("Service failed..");
+		}		
+	});
+}
+
+function signup(){
+	if($("#password").val()==$("#passwordAgain").val()){
+	$.post(serviceURL + 'ExposeWS.php?action=signup', $("#signUpForm").serialize(), function(data) {
+		var obj = jQuery.parseJSON(data);
+		if(obj.signup=="successful"){
+			alert
+			document.location.href = "listArticles.html"; 
+		} else if(obj.signup =="failed") {			
+			$("#SignUpError").css("display", "block");
+			$("#SignUpError").text("Inregistrare esuata. Incercati din nou.");
+		} else {
+		alert("Service failed..");
+		}		
+	})
+	.error(function() { 
+   alert("error"); 
+	});
+	} else {
+			$("#SignUpError").css("display", "block");
+			$("#SignUpError").text("Parolele nu coincid");
+	}
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+<link href="css/mainstyles.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css"
+	type="text/css" />
+<script type="text/javascript" src="js/iscroll.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<title>Jurnal Online</title>
+</head>
+<body>
+		<div id="masthead">
+			<img id="logo" src="img/logoxx.jpg">
+		</div>
+			<div id = "ArticolNouId" style="width:100%;background-color:white;position:absolute;">
+				<form>
+					<input type="button" value="Articol nou"  style="margin-top:5px;margin-bottom:5px" onclick="location.href='newArticle.html'"> </input>
+				</form>
+			</div>
+			<div id="wrapper">
+			<ul id="articleList" class="icon-list"></ul>
+			</div>
+
+		<script type="text/javascript">
+		function orientationHandler(){
+			$("#masthead").css("position", "absolute");
+			$("#footer").css("position", "absolute");	
+			$("#ArticolNouId").css('top', $("#masthead").outerHeight());		
+			$("#wrapper").css('top', $("#masthead").outerHeight()+$("#ArticolNouId").outerHeight() +'px');
+			$("#footer").css('top',  $(window).height()-$("#footer").height() + 'px');
+		}
+		$(window).bind('orientationchange', orientationHandler);
+		$(document).ready(function() {
+			//alert('display list');
+			$("#masthead").css("position", "absolute");
+			$("#footer").css("position", "absolute");	
+			$("#ArticolNouId").css('top', $("#masthead").outerHeight());		
+			$("#wrapper").css('top', $("#masthead").outerHeight()+$("#ArticolNouId").outerHeight() +'px');
+			$("#footer").css('top',  $(window).height()-$("#footer").height() + 'px');
+			$.getJSON(serviceURL + 'ExposeWS.php', function(articlesData, status, xhr) {
+				if(status=="success"){
+					var scroll = new iScroll('wrapper', { vScrollbar: false, hScrollbar:false, hScroll: false });
+					var articles = articlesData.listArticles.articles;
+					var noOfArticles = articlesData.listArticles.articles;
+					$("#articleList li").remove();
+					$.each(articles, function(index, article) {
+
+						var html = '<li><a href="viewArticle.html?action=viewArticle&amp;articleId='+article.id+'">'+ 
+								   '<p class="line1">' + article.title + '</p>' +
+								   '<p class="line2">' + new Date(article.publicationDate*1000).toDateString() + 
+					  			   '</p> </a><span class="bubble" onclick='+ '\'' + 'location.href="newArticle.html?action=editArticle&amp;articleId='+article.id+'"'+ '\''+
+								   '><img src="img/b_edit.png" /></span></li>';
+						
+						$("#articleList").append(html);
+					});
+					setTimeout(function(){
+						scroll.refresh();
+					});
+				} else {
+					alert('getting articles from server failed');
+				}
+			});
+		});
+</script>
+</body>
+</html>

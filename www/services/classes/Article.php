@@ -70,10 +70,11 @@ class Article
 			if ( $row ) {
 				//return 
 				$a = new Article( $row );
-				echo '{"article":'. json_encode($a).'}'; 
+				return $a;
+				//echo '{"article":'. json_encode($a).'}'; 
 			}
 		} catch (PDOException $e) {
-			echo '{"error":{"text":'. $e->getMessage() .'}}';
+			echo '{"error":{"text":'. $e->getMessage() .'}}';			
 		}
 	}
 
@@ -153,7 +154,6 @@ class Article
 		try {
 			// Insert the Article
 			$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-			echo "Hello World";
 			$sql = "INSERT INTO articles ( author,publicationDate, title, summary, content, user_fk ) VALUES (:author, DATE(NOW()), :title, :summary, :content , (SELECT user_id FROM users WHERE username=:fk))";
 			$st = $conn->prepare ( $sql );
 			$st->bindValue( ":author",$var,PDO::PARAM_STR);

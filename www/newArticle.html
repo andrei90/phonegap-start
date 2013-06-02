@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+<link href="css/mainstyles.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css"
+	type="text/css" />
+<script type="text/javascript" src="js/iscroll.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<title>Jurnal Online</title>
+</head>
+<body>
+		<div id="masthead">
+			<img id="logo" src="img/logoxx.jpg">
+		</div>
+		<div id="container" style="height:75%"> 
+			<div class="box-wrapper" id="box-wrapper">     
+				<form id="articleForm">
+					<input type="hidden" id="articleId" name="articleId" value=""/>
+				
+					<div class="errorMessage" style="dislpay:none;"></div>
+
+
+			<ul class="articles">
+				<li>
+					<input type="text" name="title" id="title" placeholder="Titlul" required autofocus maxlength="255" 
+					 />
+				</li>
+				<li>
+					<textarea name="summary" id="summary" placeholder="Descriere" required maxlength="255"></textarea>
+				</li>
+				<br />
+				<li>
+					<textarea name="content" id="content" placeholder="Continutul " required maxlength="100000"></textarea>
+				</li>
+				
+				
+        </ul>
+
+        <div class="buttons">
+          <input type="button" name="saveChanges" value="Save" onclick="saveArticle()"  />
+          <input type="button" formnovalidate name="cancel" value="Cancel" onclick="location.href='listArticles.html';" />
+        </div>
+		<script type="text/javascript">
+			 function saveArticle(){
+				//alert($("#articleForm").serialize());
+				if("editArticle"==action) {
+					//update it in db
+					$.post(serviceURL + 'ExposeWS.php?action=editArticle&saveChanges=true', $("#articleForm").serialize(), function(data) {
+						var obj = jQuery.parseJSON(data);
+						if("updated" != obj.editArticle){
+							alert('nu s-a updatuit');
+						} else {
+							document.location.href = "listArticles.html";
+						}
+					});
+					
+					} else {
+					//new article
+					//insert it in db
+					$.post(serviceURL + 'ExposeWS.php?action=newArticle', $("#articleForm").serialize(), function(data) {
+						//alert(data);
+						var obj = jQuery.parseJSON(data);
+						if("inserted" != obj.newArticle){
+							alert('nu s-a inserat');
+						} else {
+							//alert('go to lsit');
+							document.location.href = "listArticles.html";
+						}
+					});
+					
+				}
+			 }
+			 $(document).ready(function() {
+				
+					if("editArticle"==action) {
+					
+					  var getR = window.location.href.slice(window.location.href.indexOf('?') + 1);
+					  var url = serviceURL + 'ExposeWS.php?'+ getR;
+					 
+					  $.get(url,  function(articleData, status, xhr) {
+					  	//alert(articleData);
+					    var obj = jQuery.parseJSON(articleData);
+						//load data				
+						$("#title").val(obj.editArticle.article.title);
+						$("#summary").text(obj.editArticle.article.summary);
+						$("#content").text(obj.editArticle.article.content);
+						$("#articleId").val(obj.editArticle.article.id);
+					  }).error(function() { alert("error"); });
+					} 
+			 });
+		</script>
+      </form>
+</div>
+		</div>
+</body>
+</html>

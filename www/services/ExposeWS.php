@@ -72,7 +72,6 @@ switch ( $action ) {
 function signup(){
 	$results = array();
 	if(strcmp($_POST['password'],$_POST['passwordAgain'])==0){
-		if ( isset( $_POST['Creeaza_cont'] ) ) {
 			$user = new User($_POST );
 			if($user->createUser()){
 				$_SESSION['username'] = $_POST['username'];
@@ -86,12 +85,6 @@ function signup(){
 				//require( TEMPLATE_PATH . "/homepage.php" );
 				echo '{"signup": "failed"}';
 			}
-		}else if ( isset( $_POST['cancel'] ) ) {
-			// User has cancelled their edits: return to the article list
-			unset( $_SESSION['recIsClicked'] );
-			//header( "Location: index.php" );
-			echo '{"signup": "cancel"}';
-		}
 	}else{
 		$results['passDontMatch'] = "Parolele nu coincid";
 		//require( TEMPLATE_PATH . "/homepage.php" );
@@ -109,7 +102,7 @@ function login() {
 		if(User::isValidUser($_POST['username'],$_POST['password'])){
 			// Login successful: Create a session and redirect to the admin homepage
 			$_SESSION['username'] = $_POST['username'];
-			$userObj = User::getUser($username);
+			$userObj = User::getUser($_POST['username']);
 			$_SESSION['userObj'] = serialize($userObj);
 			echo '{"login": "successful"}';
 			//header( "Location: admin.php" );
@@ -144,22 +137,12 @@ function logout() {
 function newArticle() {
 	$results = array();
 	$results['formAction'] = "newArticle";
-	if ( isset( $_POST['saveChanges'] ) ) {
-		// User has posted the article edit form: save the new article
-		$article = new Article( $_POST );
-		$article->insert($_SESSION['username']);
-		//header( "Location: admin.php?status=changesSaved" );
-		echo '{"newArticle":'. json_encode($article) .'}'; 
-	} elseif ( isset( $_POST['cancel'] ) ) {
-		// User has cancelled their edits: return to the article list
-		header( "Location: admin.php" );
-		echo '{"newArticle":"cancel"}';
-	} else {
-		// User has not posted the article edit form yet: display the form
-		//$results['article'] = new Article;
-		echo '{"newArticle":"display"}';
-		//require( TEMPLATE_PATH . "/admin/editArticle.php" );
-	}
+	
+	// User has posted the article edit form: save the new article
+	$article = new Article( $_POST );
+	$article->insert($_SESSION['username']);
+	//header( "Location: admin.php?status=changesSaved" );
+	echo '{"newArticle":"inserted"}'; 
 }
 
 
@@ -169,7 +152,7 @@ function newArticle() {
 function editArticle() {
 	$results = array();
 	$results['formAction'] = "editArticle";
-	if ( isset( $_POST['saveChanges'] ) ) {
+	if ( isset( $_GET['saveChanges'] ) ) {
 		// User has posted the article edit form: save the article changes
 		if ( !$article = Article::getById( (int)$_POST['articleId'] ) ) {
 			//header( "Location: admin.php?error=articleNotFound" );
@@ -178,16 +161,12 @@ function editArticle() {
 		}
 		$article->storeFormValues( $_POST );
 		$article->update();
-		echo '{"editArticle":'. json_encode($article) .'}';
+		echo '{"editArticle":"updated"}';
 		//header( "Location: admin.php?status=changesSaved" );
-	} elseif ( isset( $_POST['cancel'] ) ) {
-		// User has cancelled their edits: return to the article list
-		//header( "Location: admin.php" );
-		echo '{"editArticle":"cancel"}';
-	} else {
+	}  else {
 		// User has not posted the article edit form yet: display the form
 		$results['article'] = Article::getById( (int)$_GET['articleId'] );
-		echo '{"editArticle":"display"}';
+		echo '{"editArticle":'. json_encode($results) .'}';
 		//require( TEMPLATE_PATH . "/admin/editArticle.php" );
 	}
 }

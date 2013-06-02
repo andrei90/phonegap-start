@@ -1,66 +1,29 @@
-<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8" />
-<meta name="format-detection" content="telephone=no" />
-<meta name="viewport"
-	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-
-<link rel="stylesheet" type="text/css" href="css/index.css" />
-<link href="css/mainstyles.css" rel="stylesheet" type="text/css" />
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link href="css/mainstyles.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css"
 	type="text/css" />
-
-<script src="js/jquery.mobile-1.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<!--<script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>-->
 <script type="text/javascript" src="phonegap.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script src="js/iscroll.js"></script>
+<script type="text/javascript" src="js/iscroll.js"></script>
 
-<title>Jurnal Online</title>
-</head>
-<body>
-	<div class="app">
-		<div id="masthead">
-			<img id="logo" src="../web/images/logoxx.jpg">
-		</div>
-		<div id="container">
-			<div id="introText">
-
-				<p id="intro" align="justify">
-				<p>Jurnal Online este o platforma de blogging care poate sa iti
-					ofera mai mult decat orice alta astfel de platforma.</p>
-
-				<p>
-					<b> Te lasa sa iti alegi cititorii.</b> Daca doriti sa incercati,
-					va rog sa va inregistrati apasand butonul de mai jos.
-				</p>
-
-				<br /> <br />
-			</div>
-			<form action="admin.php?action=login" method="post" id="loginForm">
-				<input type="hidden" name="login" value="true" />
-				<fieldset>
-					<label for="username">Utilizator</label> <input type="text"
-						name="username" id="username" placeholder="Utilizatorul tau"
-						required autofocus maxlength="20" /> <label for="password">Parola</label>
-					<input type="password" name="password" id="password"
-						placeholder="Parola ta" required maxlength="20" /> <input
-						type="submit" id="but" value="Inregistrare" name="rec" /> <input
-						type="submit" class="button" name="commit" value="Autentificare" />
-
-				</fieldset>
-				<br />
-				<div class="errorMessage"></div>
-			</form>
-		</div>
-		<div id="footer">
-			<br />
-			<p align='center'>&copy; 2013. Toate drepturile rezervate.</p>
-		</div>
-		<script type="text/javascript">
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>PhoneGap</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
             app.initialize();
         </script>
-	</div>
-
-</body>
+    </body>
 </html>
